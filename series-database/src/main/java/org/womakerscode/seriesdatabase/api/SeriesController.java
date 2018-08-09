@@ -22,7 +22,7 @@ public class SeriesController {
 
         Iterable<Serie> series = seriesRepository.findAll();
 
-        return new ResponseEntity<Iterable<Serie>>(series, HttpStatus.OK);
+        return new ResponseEntity<>(series, HttpStatus.OK);
     }
 
     @PostMapping("/serie")
@@ -30,7 +30,7 @@ public class SeriesController {
 
         seriesRepository.save(serie);
 
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }
