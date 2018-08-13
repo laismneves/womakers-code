@@ -1,35 +1,41 @@
 package org.womakerscode.seriesdatabase.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.womakerscode.seriesdatabase.repository.SeriesRepository;
+import org.springframework.web.bind.annotation.*;
 import org.womakerscode.seriesdatabase.entity.Serie;
+import org.womakerscode.seriesdatabase.repository.SeriesRepository;
+
+import java.util.List;
 
 
 @RestController
 public class SeriesController {
 
-    @Autowired
     private SeriesRepository seriesRepository;
 
+    public SeriesController(SeriesRepository seriesRepository) {
+        this.seriesRepository = seriesRepository;
+    }
+
     @GetMapping("/series")
-    public ResponseEntity<Iterable<Serie>>listar(){
+    public ResponseEntity<List<Serie>>listar(){
 
-        Iterable<Serie> series = seriesRepository.findAll();
-
+        List<Serie> series = seriesRepository.findAll();
         return new ResponseEntity<>(series, HttpStatus.OK);
+    }
+
+    @GetMapping("serie/{id}")
+    public ResponseEntity<Serie> buscarPorId(@PathVariable("id") Integer id) {
+
+        Serie serie = seriesRepository.findById(id).get();
+        return new ResponseEntity<Serie>(serie, HttpStatus.OK);
     }
 
     @PostMapping("/serie")
     public ResponseEntity<Void> inserir(@RequestBody Serie serie) {
 
         seriesRepository.save(serie);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
